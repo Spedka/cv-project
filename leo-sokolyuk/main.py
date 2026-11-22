@@ -16,12 +16,13 @@ if imgColor is None:
     sys.exit("Error: Image could not be loaded")
 
 imgGray = cv2.cvtColor(imgColor, cv2.COLOR_BGR2GRAY)
-
-print(imgColor.shape)
-print(imgGray.shape)
+imgGrayBlur = cv2.GaussianBlur(imgGray, (5,5), 1.2)
+imgGrayBlurEdge = cv2.Canny(imgGrayBlur, 100, 200)
 
 cv2.imshow("Colored Image", imgColor)
 cv2.imshow("Grayscale Image", imgGray)
+cv2.imshow("Grayscale Blurred", imgGrayBlur)
+cv2.imshow("Grayscale Blurred Edge Map", imgGrayBlurEdge)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
