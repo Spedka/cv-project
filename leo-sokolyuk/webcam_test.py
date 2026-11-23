@@ -60,17 +60,18 @@ while True:
     fps = 1 / (curr_time - prev_time)
     prev_time = curr_time
 
-    cv2.putText(frame, f"FPS: {int(fps)}", (10,30), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2)
+    copy = frame.copy()
 
-    cv2.imshow("Colored feed", frame)
+    cv2.putText(copy, f"FPS: {int(fps)}", (10,30), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2, lineType=cv2.LINE_AA)
+
+    cv2.imshow("Colored feed", copy)
     
     show_canny_image(frame, low_threshold, high_threshold, winName)
-
-
+    
     key = cv2.waitKey(1) & 0xFF
 
     if key == ord('q') or key == esc:
         break
 
-cv2.destroyAllWindows()
 cap.release()
+cv2.destroyAllWindows()
