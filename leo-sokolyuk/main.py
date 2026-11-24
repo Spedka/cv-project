@@ -98,34 +98,36 @@ def webcam_feed():
 
     create_trackbars(live_edge_window)
 
-    while True:
-        if cv2.getWindowProperty(live_edge_window, cv2.WND_PROP_VISIBLE) < 1 or cv2.getWindowProperty(live_color_window, cv2.WND_PROP_VISIBLE) < 1:
-            break
+    try:
 
-        ret, frame = cap.read()
+        while True:
+            if cv2.getWindowProperty(live_edge_window, cv2.WND_PROP_VISIBLE) < 1 or cv2.getWindowProperty(live_color_window, cv2.WND_PROP_VISIBLE) < 1:
+                break
 
-        if not ret:
-            print("Frame read failed")
-            break
+            ret, frame = cap.read()
 
-        curr_time = time.perf_counter()
-        fps = 1 / (curr_time - prev_time)
-        prev_time = curr_time
+            if not ret:
+                print("Frame read failed")
+                break
 
-        copy = frame.copy()
+            curr_time = time.perf_counter()
+            fps = 1 / (curr_time - prev_time)
+            prev_time = curr_time
 
-        cv2.putText(copy, f"FPS: {int(fps)}", (10,30), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2, lineType = cv2.LINE_AA)
+            copy = frame.copy()
 
-        cv2.imshow(live_color_window, copy)
+            cv2.putText(copy, f"FPS: {int(fps)}", (10,30), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2, lineType = cv2.LINE_AA)
 
-        show_canny_image(frame, low_threshold, high_threshold, live_edge_window, kernel_size, sigma_value)
+            cv2.imshow(live_color_window, copy)
 
-        key = cv2.waitKey(1) & 0xFF
+            show_canny_image(frame, low_threshold, high_threshold, live_edge_window, kernel_size, sigma_value)
 
-        if key == ord('q') or key == esc:
-            break
+            key = cv2.waitKey(1) & 0xFF
 
-    cap.release()
+            if key == ord('q') or key == esc:
+                break
+    finally:    
+        cap.release()
 
 def still_feed():
     global current_edge_window
