@@ -33,13 +33,14 @@ pt2 = (max_loc[0] + w, max_loc[1] + h)
 color = (0, 255, 0)
 thickness = 2
 
-rectangle = cv2.rectangle(target_color, pt1, pt2, color, thickness)
+target_color = cv2.rectangle(target_color, pt1, pt2, color, thickness)
 
 cv2.namedWindow("Window", cv2.WINDOW_NORMAL)
-cv2.imshow("Window", rectangle)
 
 for pt in zip(*locations[::-1]):
-    cv2.rectangle(target_color, pt, (pt[0] + w, pt[1] + h), (0, 255, 0), 2)
+    cv2.rectangle(target_color, pt, (pt[0] + w, pt[1] + h), color, thickness)
+
+cv2.imshow("Window", target_color)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
